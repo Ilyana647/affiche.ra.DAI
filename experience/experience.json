@@ -1,6 +1,6 @@
 {
   "$schema": "../core/schema/experience.schema.json",
-  "title": "Affiches Castors — Puzzle AR",
+  "title": "Affiches Castors — Test Cube Rouge",
   "author": "DNMade 2 Numérique",
   "targets": [
     { "id": "image-7", "file": "image-7.json" },
@@ -19,34 +19,6 @@
     "textColor": "#ffffff",
     "font": "system-ui"
   },
-  "behaviors": ["puzzle-interactif"],
-  "bricks": [
-    {
-      "id": "feux-scan",
-      "type": "particles",
-      "target": "*",
-      "preset": "sparkles",
-      "color": ["#ffcc00", "#ff3b30", "#00d4ff", "#ffffff", "#ff8800"],
-      "density": 0.2,
-      "speed": 1.2,
-      "size": 1.1,
-      "direction": "out",
-      "z": -0.05,
-      "area": { "width": 1.5, "height": 2.0, "depth": 0.4 }
-    },
-    {
-      "id": "feux-final",
-      "type": "particles",
-      "target": "*",
-      "trigger": { "type": "collected" },
-      "preset": "sparkles",
-      "color": ["#ff0055", "#ffcc00", "#00ff88", "#00d4ff", "#aa00ff", "#ff6600"],
-      "density": 0.35,
-      "speed": 1.8,
-      "size": 1.3,
-      "direction": "out",
-      "z": 0.15,
-      "area": { "width": 2.2, "height": 2.8, "depth": 0.6 }
-    }
-  ]
+  "behaviors": ["cube-rouge"],
+  "bricks": []
 }
