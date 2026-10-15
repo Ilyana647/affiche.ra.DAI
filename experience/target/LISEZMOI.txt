@@ -1,0 +1,16 @@
+Cibles du groupe « maisons-castors » (9 affiches) — générées le 15/10/2026 10:58:23
+
+Dépose TOUS ces fichiers dans experience/target/ du projet du groupe.
+Puis colle ce bloc dans experience.json :
+
+"targets": [
+  { "id": "maison-1", "file": "maison-1.json" },
+  { "id": "maison-2", "file": "maison-2.json" },
+  { "id": "maison-3", "file": "maison-3.json" },
+  { "id": "maison-4", "file": "maison-4.json" },
+  { "id": "maison-5", "file": "maison-5.json" },
+  { "id": "maison-6", "file": "maison-6.json" },
+  { "id": "maison-7", "file": "maison-7.json" },
+  { "id": "maison-8", "file": "maison-8.json" },
+  { "id": "maison-9", "file": "maison-9.json" }
+],

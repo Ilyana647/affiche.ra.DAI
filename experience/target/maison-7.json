@@ -1,0 +1,24 @@
+{
+  "imagePath": "image-targets/maison-7_luminance.jpg",
+  "metadata": null,
+  "name": "maison-7",
+  "type": "PLANAR",
+  "properties": {
+    "left": 10,
+    "top": 0,
+    "width": 625,
+    "height": 833,
+    "isRotated": false,
+    "originalWidth": 644,
+    "originalHeight": 833
+  },
+  "resources": {
+    "originalImage": "maison-7_original.jpg",
+    "croppedImage": "maison-7_cropped.jpg",
+    "thumbnailImage": "maison-7_thumbnail.jpg",
+    "luminanceImage": "maison-7_luminance.jpg",
+    "posterImage": "maison-7_poster.jpg"
+  },
+  "created": 1792054535504,
+  "updated": 1792054535504
+}

@@ -1,0 +1,24 @@
+{
+  "imagePath": "image-targets/maison-3_luminance.jpg",
+  "metadata": null,
+  "name": "maison-3",
+  "type": "PLANAR",
+  "properties": {
+    "left": 9,
+    "top": 0,
+    "width": 626,
+    "height": 835,
+    "isRotated": false,
+    "originalWidth": 644,
+    "originalHeight": 835
+  },
+  "resources": {
+    "originalImage": "maison-3_original.jpg",
+    "croppedImage": "maison-3_cropped.jpg",
+    "thumbnailImage": "maison-3_thumbnail.jpg",
+    "luminanceImage": "maison-3_luminance.jpg",
+    "posterImage": "maison-3_poster.jpg"
+  },
+  "created": 1792054535447,
+  "updated": 1792054535447
+}
