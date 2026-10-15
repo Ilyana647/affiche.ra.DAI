@@ -1,16 +1,16 @@
-Cibles du groupe « maison-castors » (9 affiches) — générées le 15/10/2026 18:00:44
+Cibles du groupe « maison-castors » (9 affiches) — générées le 15/10/2026 18:44:51
 
 Dépose TOUS ces fichiers dans experience/target/ du projet du groupe.
 Puis colle ce bloc dans experience.json :
 
 "targets": [
-  { "id": "1", "file": "1.json" },
-  { "id": "2", "file": "2.json" },
-  { "id": "3", "file": "3.json" },
-  { "id": "4", "file": "4.json" },
-  { "id": "5", "file": "5.json" },
-  { "id": "6", "file": "6.json" },
-  { "id": "7", "file": "7.json" },
-  { "id": "8", "file": "8.json" },
-  { "id": "9", "file": "9.json" }
+  { "id": "affiche1", "file": "affiche1.json" },
+  { "id": "affiche2", "file": "affiche2.json" },
+  { "id": "affiche3", "file": "affiche3.json" },
+  { "id": "affiche4", "file": "affiche4.json" },
+  { "id": "affiche5", "file": "affiche5.json" },
+  { "id": "affiche6", "file": "affiche6.json" },
+  { "id": "affiche7", "file": "affiche7.json" },
+  { "id": "affiche8", "file": "affiche8.json" },
+  { "id": "affiche9", "file": "affiche9.json" }
 ],

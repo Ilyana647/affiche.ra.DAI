@@ -1,0 +1,24 @@
+{
+  "imagePath": "image-targets/affiche2_luminance.jpg",
+  "metadata": null,
+  "name": "affiche2",
+  "type": "PLANAR",
+  "properties": {
+    "left": 7,
+    "top": 0,
+    "width": 2571,
+    "height": 3428,
+    "isRotated": false,
+    "originalWidth": 2585,
+    "originalHeight": 3428
+  },
+  "resources": {
+    "originalImage": "affiche2_original.jpg",
+    "croppedImage": "affiche2_cropped.jpg",
+    "thumbnailImage": "affiche2_thumbnail.jpg",
+    "luminanceImage": "affiche2_luminance.jpg",
+    "posterImage": "affiche2_poster.jpg"
+  },
+  "created": 1792082623535,
+  "updated": 1792082623535
+}
