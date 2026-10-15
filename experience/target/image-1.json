@@ -1,0 +1,24 @@
+{
+  "imagePath": "image-targets/image-1_luminance.jpg",
+  "metadata": null,
+  "name": "image-1",
+  "type": "PLANAR",
+  "properties": {
+    "left": 0,
+    "top": 0,
+    "width": 736,
+    "height": 981,
+    "isRotated": false,
+    "originalWidth": 736,
+    "originalHeight": 981
+  },
+  "resources": {
+    "originalImage": "image-1_original.jpg",
+    "croppedImage": "image-1_cropped.jpg",
+    "thumbnailImage": "image-1_thumbnail.jpg",
+    "luminanceImage": "image-1_luminance.jpg",
+    "posterImage": "image-1_poster.jpg"
+  },
+  "created": 1792075458489,
+  "updated": 1792075458489
+}
