@@ -98,7 +98,7 @@ export default defineConfig(({mode}) => ({
   publicDir: 'experience',
   server: {
     host: true,
-    port: 5173,
+    port: Number(process.env.PORT) || 3000,
   },
   preview: {
     host: true,
