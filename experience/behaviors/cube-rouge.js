@@ -1,8 +1,19 @@
 /** @type {import('../../core/behaviors').Behavior} */
 export default {
   onFound(ctx, targetId) {
-    // Si l'affiche détectée n'a pas encore son cube rouge, on le crée
-    let cube = ctx.poster.getObjectByName('cube-rouge')
+    if (!ctx.state.cubes) {
+      ctx.state.cubes = {}
+    }
+
+    // Masquer les cubes des autres affiches éventuelles
+    for (const [id, c] of Object.entries(ctx.state.cubes)) {
+      if (id !== targetId) {
+        c.visible = false
+      }
+    }
+
+    // Récupérer ou créer le cube rouge de cette affiche
+    let cube = ctx.state.cubes[targetId]
     if (!cube) {
       // 20 % de la largeur de l'affiche
       const taille = 0.2
@@ -19,24 +30,49 @@ export default {
       cube.position.copy(ctx.toLocal(0.5, 0.5, 0.15))
 
       ctx.poster.add(cube)
+      ctx.state.cubes[targetId] = cube
     }
+
+    // Rendre le cube visible dès la détection
     cube.visible = true
   },
 
   onLost(ctx, targetId) {
-    // Cache le cube lorsque l'affiche n'est plus visible
-    const cube = ctx.poster.getObjectByName('cube-rouge')
-    if (cube) {
-      cube.visible = false
+    // Dès que le scan est perdu, masquer immédiatement le cube de l'affiche
+    if (ctx.state.cubes) {
+      if (ctx.state.cubes[targetId]) {
+        ctx.state.cubes[targetId].visible = false
+      }
+      // Si aucune affiche n'est suivie, s'assurer que tous les cubes sont bien masqués
+      if (!ctx.tracked) {
+        for (const cube of Object.values(ctx.state.cubes)) {
+          cube.visible = false
+        }
+      }
+    }
+
+    const cubeSurAffiche = ctx.poster && ctx.poster.getObjectByName('cube-rouge')
+    if (cubeSurAffiche) {
+      cubeSurAffiche.visible = false
     }
   },
 
   onUpdate(ctx, t, dt) {
-    // Fait tourner lentement le cube sur lui-même
-    const cube = ctx.poster.getObjectByName('cube-rouge')
-    if (cube && cube.visible) {
-      cube.rotation.x += dt * 0.6
-      cube.rotation.y += dt * 0.8
+    // Si l'affiche n'est plus scannée, cacher les cubes et ne rien faire
+    if (!ctx.tracked) {
+      if (ctx.state.cubes) {
+        for (const cube of Object.values(ctx.state.cubes)) {
+          cube.visible = false
+        }
+      }
+      return
+    }
+
+    // Faire tourner lentement le cube de l'affiche actuellement scannée
+    const currentCube = ctx.state.cubes && ctx.target ? ctx.state.cubes[ctx.target] : null
+    if (currentCube && currentCube.visible) {
+      currentCube.rotation.x += dt * 0.6
+      currentCube.rotation.y += dt * 0.8
     }
   },
 }
