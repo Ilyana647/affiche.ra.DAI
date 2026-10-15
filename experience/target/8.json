@@ -1,0 +1,24 @@
+{
+  "imagePath": "image-targets/8_luminance.jpg",
+  "metadata": null,
+  "name": "8",
+  "type": "PLANAR",
+  "properties": {
+    "left": 7,
+    "top": 0,
+    "width": 2571,
+    "height": 3428,
+    "isRotated": false,
+    "originalWidth": 2585,
+    "originalHeight": 3428
+  },
+  "resources": {
+    "originalImage": "8_original.jpg",
+    "croppedImage": "8_cropped.jpg",
+    "thumbnailImage": "8_thumbnail.jpg",
+    "luminanceImage": "8_luminance.jpg",
+    "posterImage": "8_poster.jpg"
+  },
+  "created": 1792080034240,
+  "updated": 1792080034240
+}
