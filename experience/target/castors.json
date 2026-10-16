@@ -1,0 +1,24 @@
+{
+  "imagePath": "image-targets/castors_luminance.jpg",
+  "metadata": null,
+  "name": "castors",
+  "type": "PLANAR",
+  "properties": {
+    "left": 98,
+    "top": 0,
+    "width": 7672,
+    "height": 10229,
+    "isRotated": false,
+    "originalWidth": 7867,
+    "originalHeight": 10229
+  },
+  "resources": {
+    "originalImage": "castors_original.jpg",
+    "croppedImage": "castors_cropped.jpg",
+    "thumbnailImage": "castors_thumbnail.jpg",
+    "luminanceImage": "castors_luminance.jpg",
+    "posterImage": "castors_poster.jpg"
+  },
+  "created": 1792141684023,
+  "updated": 1792141684023
+}

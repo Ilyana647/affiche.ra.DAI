@@ -1,16 +1,17 @@
-Cibles du groupe « maisons-castors » (9 affiches) — générées le 16/10/2026 09:25:18
+Cibles du groupe « maisons-castors » (10 affiches) — générées le 16/10/2026 11:09:36
 
 Dépose TOUS ces fichiers dans experience/target/ du projet du groupe.
 Puis colle ce bloc dans experience.json :
 
 "targets": [
-  { "id": "affiche-1", "file": "affiche-1.json" },
-  { "id": "affiche-2", "file": "affiche-2.json" },
-  { "id": "affiche-3", "file": "affiche-3.json" },
-  { "id": "affiche-4", "file": "affiche-4.json" },
-  { "id": "affiche-5", "file": "affiche-5.json" },
-  { "id": "affiche-6", "file": "affiche-6.json" },
-  { "id": "affiche-7", "file": "affiche-7.json" },
-  { "id": "affiche-8", "file": "affiche-8.json" },
-  { "id": "affiche-9", "file": "affiche-9.json" }
+  { "id": "castor-1", "file": "castor-1.json" },
+  { "id": "castor-2", "file": "castor-2.json" },
+  { "id": "castor-3", "file": "castor-3.json" },
+  { "id": "castor-4", "file": "castor-4.json" },
+  { "id": "castor-5", "file": "castor-5.json" },
+  { "id": "castor-6", "file": "castor-6.json" },
+  { "id": "castor-7", "file": "castor-7.json" },
+  { "id": "castor-8", "file": "castor-8.json" },
+  { "id": "castor-9", "file": "castor-9.json" },
+  { "id": "castors", "file": "castors.json" }
 ],

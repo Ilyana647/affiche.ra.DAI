@@ -1,0 +1,24 @@
+{
+  "imagePath": "image-targets/castor-7_luminance.jpg",
+  "metadata": null,
+  "name": "castor-7",
+  "type": "PLANAR",
+  "properties": {
+    "left": 35,
+    "top": 0,
+    "width": 2571,
+    "height": 3428,
+    "isRotated": false,
+    "originalWidth": 2641,
+    "originalHeight": 3428
+  },
+  "resources": {
+    "originalImage": "castor-7_original.jpg",
+    "croppedImage": "castor-7_cropped.jpg",
+    "thumbnailImage": "castor-7_thumbnail.jpg",
+    "luminanceImage": "castor-7_luminance.jpg",
+    "posterImage": "castor-7_poster.jpg"
+  },
+  "created": 1792141718300,
+  "updated": 1792141718300
+}
