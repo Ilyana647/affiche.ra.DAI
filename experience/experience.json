@@ -1,24 +1,52 @@
 {
   "$schema": "../core/schema/experience.schema.json",
-  "title": "Affiche démo — cube",
+  "title": "Affiches Castors — Cartes Rares & Puzzle",
   "author": "DNMade 2 Numérique",
   "targets": [
-    { "id": "affiche1", "file": "image-1.json" },
-    { "id": "affiche2", "file": "image-2.json" },
-    { "id": "affiche3", "file": "image-3.json" },
-    { "id": "affiche4", "file": "image-4.json" },
-    { "id": "affiche5", "file": "image-5.json" },
-    { "id": "affiche6", "file": "image-6.json" },
-    { "id": "affiche7", "file": "image-7.json" },
-    { "id": "affiche8", "file": "image-8.json" },
-    { "id": "affiche9", "file": "image-9.json" }
+    { "id": "affiche-1", "file": "affiche-1.json" },
+    { "id": "affiche-2", "file": "affiche-2.json" },
+    { "id": "affiche-3", "file": "affiche-3.json" },
+    { "id": "affiche-4", "file": "affiche-4.json" },
+    { "id": "affiche-5", "file": "affiche-5.json" },
+    { "id": "affiche-6", "file": "affiche-6.json" },
+    { "id": "affiche-7", "file": "affiche-7.json" },
+    { "id": "affiche-8", "file": "affiche-8.json" },
+    { "id": "affiche-9", "file": "affiche-9.json" }
   ],
   "onLost": "hide",
   "theme": {
-    "color": "#ff3b30",
-    "textColor": "#ffffff",
+    "color": "#ffaa00",
+    "textColor": "#000000",
     "font": "system-ui"
   },
-  "behaviors": ["cube-rouge"],
-  "bricks": []
+  "behaviors": ["carte-rare"],
+  "bricks": [
+    {
+      "id": "eclat-dore",
+      "type": "particles",
+      "target": "*",
+      "preset": "sparkles",
+      "color": ["#ffea00", "#ffaa00", "#ffffff", "#ff8800", "#ffe082"],
+      "density": 0.35,
+      "speed": 1.4,
+      "size": 1.2,
+      "direction": "out",
+      "z": -0.05,
+      "area": { "width": 1.6, "height": 2.2, "depth": 0.5 }
+    },
+    {
+      "id": "feux-final",
+      "type": "particles",
+      "target": "*",
+      "trigger": { "type": "collected" },
+      "preset": "sparkles",
+      "color": ["#ff0055", "#ffcc00", "#00ff88", "#00d4ff", "#aa00ff", "#ff6600"],
+      "density": 0.45,
+      "speed": 2.0,
+      "size": 1.4,
+      "direction": "out",
+      "z": 0.15,
+      "area": { "width": 2.4, "height": 3.0, "depth": 0.7 }
+    }
+  ]
 }
