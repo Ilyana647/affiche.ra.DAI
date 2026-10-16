@@ -3,15 +3,15 @@
   "title": "Affiche démo — cube",
   "author": "DNMade 2 Numérique",
   "targets": [
-    { "id": "affiche1", "file": "affiche1.json" },
-    { "id": "affiche2", "file": "affiche2.json" },
-    { "id": "affiche3", "file": "affiche3.json" },
-    { "id": "affiche4", "file": "affiche4.json" },
-    { "id": "affiche5", "file": "affiche5.json" },
-    { "id": "affiche6", "file": "affiche6.json" },
-    { "id": "affiche7", "file": "affiche7.json" },
-    { "id": "affiche8", "file": "affiche8.json" },
-    { "id": "affiche9", "file": "affiche9.json" }
+    { "id": "affiche1", "file": "image-1.json" },
+    { "id": "affiche2", "file": "image-2.json" },
+    { "id": "affiche3", "file": "image-3.json" },
+    { "id": "affiche4", "file": "image-4.json" },
+    { "id": "affiche5", "file": "image-5.json" },
+    { "id": "affiche6", "file": "image-6.json" },
+    { "id": "affiche7", "file": "image-7.json" },
+    { "id": "affiche8", "file": "image-8.json" },
+    { "id": "affiche9", "file": "image-9.json" }
   ],
   "onLost": "hide",
   "theme": {
