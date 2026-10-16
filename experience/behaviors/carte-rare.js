@@ -1,6 +1,17 @@
 /** @type {import('../../core/behaviors').Behavior} */
 export default {
   onFound(ctx, targetId) {
+    // Si c'est l'affiche complète "castors", elle n'a pas l'animation de carte
+    if (targetId === 'castors') {
+      const b = ctx.bricks && ctx.bricks.get('eclat-dore')
+      if (b && b.group) b.group.visible = false
+      return
+    }
+
+    // Réactiver les particules d'étincelles pour les affiches 1 à 9
+    const b = ctx.bricks && ctx.bricks.get('eclat-dore')
+    if (b && b.group) b.group.visible = true
+
     if (!ctx.state.cards) {
       ctx.state.cards = {}
     }
@@ -8,8 +19,14 @@ export default {
       ctx.state.cardTimes = {}
     }
 
-    // Réinitialiser le chronomètre pour rejouer l'animation de 2 tours dès la détection
+    // Réinitialiser le chronomètre pour jouer les 2 tours linéaires dès la détection
     ctx.state.cardTimes[targetId] = 0
+
+    // Mémoriser la découverte pour le puzzle (seulement castor-1 à castor-9)
+    if (!ctx.state.discovered) {
+      ctx.state.discovered = new Set()
+    }
+    ctx.state.discovered.add(targetId)
 
     // Masquer les autres cartes d'affiches
     for (const [id, group] of Object.entries(ctx.state.cards)) {
@@ -18,7 +35,7 @@ export default {
       }
     }
 
-    // 1. CARTE RARE COLLECTOR AVEC HALO DORÉ / AMBRE
+    // 1. CARTE COLLECTOR 3D (SANS HALO DE LUMIÈRE)
     let group = ctx.state.cards[targetId]
     if (!group) {
       group = new ctx.THREE.Group()
@@ -33,7 +50,7 @@ export default {
       loader.load(texturePath, (texture) => {
         texture.colorSpace = ctx.THREE.SRGBColorSpace
 
-        // Calcul du ratio exact de l'affiche (aucun étirement ni tassement)
+        // Calcul du ratio exact sans déformation (hauteur / largeur)
         const img = texture.image
         const ratio = (img && img.naturalHeight && img.naturalWidth)
           ? (img.naturalHeight / img.naturalWidth)
@@ -42,7 +59,6 @@ export default {
         const width = 0.90
         const height = width * ratio
 
-        // --- CARTE COLLECTOR 3D DOUBLE-FACE ---
         const cardGeo = new ctx.THREE.PlaneGeometry(width, height)
 
         // Face avant (visuel de l'affiche)
@@ -71,7 +87,7 @@ export default {
       ctx.state.cards[targetId] = group
     }
 
-    // Position initiale : face à 0°
+    // Démarrage à 0°
     group.rotation.y = 0
     group.visible = true
 
@@ -79,13 +95,13 @@ export default {
     this.setupUi(ctx)
     this.updateCounter(ctx)
 
-    if (ctx.collection.complete) {
+    // Si les 9 affiches du puzzle ont été scannées, ouvrir le puzzle
+    if (ctx.state.discovered.size >= 9) {
       this.openPuzzle(ctx)
     }
   },
 
   onLost(ctx, targetId) {
-    // Dès que le scan est perdu, masquer la carte et son halo
     if (ctx.state.cards) {
       if (ctx.state.cards[targetId]) {
         ctx.state.cards[targetId].visible = false
@@ -108,35 +124,36 @@ export default {
       return
     }
 
-    const currentCard = ctx.state.cards && ctx.target ? ctx.state.cards[ctx.target] : null
+    // Animation linéaire pure de 2 tours complets
+    const targetId = ctx.target
+    if (targetId === 'castors') return
+
+    const currentCard = ctx.state.cards && targetId ? ctx.state.cards[targetId] : null
     if (currentCard && currentCard.visible) {
-      // Durée pour réaliser exactement 2 tours complets (720°) à vitesse linéaire constante
       const DURATION = 3.2
       const TOTAL_ROTATION = Math.PI * 4 // 2 tours = 4π
 
       if (!ctx.state.cardTimes) ctx.state.cardTimes = {}
-      const targetId = ctx.target
       const currentTime = (ctx.state.cardTimes[targetId] || 0) + dt
       ctx.state.cardTimes[targetId] = currentTime
 
       if (currentTime < DURATION) {
-        // Progression linéaire pure (vitesse constante)
+        // Vitesse constante (progression linéaire pure)
         const progress = currentTime / DURATION
         currentCard.rotation.y = progress * TOTAL_ROTATION
       } else {
-        // Arrêt exact face à nous (2 tours terminés)
+        // Arrêt net face au spectateur
         currentCard.rotation.y = TOTAL_ROTATION
       }
-
-
     }
   },
 
   updateCounter(ctx) {
     const badge = ctx.state.badgeCount
     if (badge) {
-      badge.textContent = `${ctx.collection.count} / ${ctx.collection.total}`
-      if (ctx.collection.complete) {
+      const count = ctx.state.discovered ? ctx.state.discovered.size : 0
+      badge.textContent = `${count} / 9`
+      if (count >= 9) {
         badge.classList.add('is-complete')
       }
     }
@@ -160,7 +177,7 @@ export default {
     if (ctx.state.uiPrete) return
     ctx.state.uiPrete = true
 
-    // Style de l'interface (HUD, puzzle 3x3, pièces, feux d'artifice)
+    // Style de l'interface (HUD, puzzle 3x3, pièces, feux d'artifice multicolores)
     ctx.ui.style(`
       .ra-hud-bar {
         position: fixed;
@@ -311,7 +328,7 @@ export default {
         display: block;
       }
 
-      /* Tiroir des pièces en bas */
+      /* Tiroir des 9 pièces en bas */
       .ra-puzzle-tray-container {
         width: 100%;
         max-width: 480px;
@@ -401,7 +418,7 @@ export default {
         box-shadow: 0 4px 16px rgba(255, 170, 0, 0.5);
       }
 
-      /* Feux d'artifice multicolores du final */
+      /* Feux d'artifice multicolores festifs */
       .ra-fireworks-layer {
         position: absolute;
         inset: 0;
@@ -442,10 +459,11 @@ export default {
 
     // Bouton HUD en haut à droite
     const hud = ctx.ui.panel('hud', { position: 'free', keep: true })
+    const initialCount = ctx.state.discovered ? ctx.state.discovered.size : 0
     hud.innerHTML = `
       <div class="ra-hud-bar">
         <button type="button" class="ra-hud-btn" id="btn-open-puzzle">
-          ⭐ Puzzle <span class="ra-hud-badge" id="badge-count">${ctx.collection.count} / ${ctx.collection.total}</span>
+          ⭐ Puzzle <span class="ra-hud-badge" id="badge-count">${initialCount} / 9</span>
         </button>
       </div>
     `
@@ -456,12 +474,12 @@ export default {
 
     // Ordre des 9 affiches dans le puzzle 3x3
     const ORDER = [
-      'affiche-1', 'affiche-2', 'affiche-3',
-      'affiche-4', 'affiche-5', 'affiche-6',
-      'affiche-7', 'affiche-8', 'affiche-9'
+      'castor-1', 'castor-2', 'castor-3',
+      'castor-4', 'castor-5', 'castor-6',
+      'castor-7', 'castor-8', 'castor-9'
     ]
 
-    // Feux d'artifice multicolores festifs pour le puzzle final
+    // Feux d'artifice multicolores du final
     const burstColors = ['#ff0055', '#ffcc00', '#00ff88', '#00d4ff', '#ff6600', '#ffffff', '#e040fb']
     const burstPositions = [
       { x: 25, y: 24, delay: 0 },
@@ -486,7 +504,7 @@ export default {
         <div class="ra-fireworks-layer" id="fireworks-container">${fireworksHtml}</div>
         <div class="ra-puzzle-header">
           <h2 class="ra-puzzle-title">Le Grand Puzzle des Castors</h2>
-          <p class="ra-puzzle-subtitle">Touchez une carte en bas, puis sa case dans la grille 3×3.</p>
+          <p class="ra-puzzle-subtitle">Touchez une affiche en bas, puis sa case dans la grille 3×3.</p>
           <button type="button" class="ra-puzzle-close" id="btn-close-puzzle">✕</button>
         </div>
 
@@ -500,12 +518,12 @@ export default {
 
         <div class="ra-puzzle-victory" id="victory-box">
           <div class="ra-victory-title">✨ Félicitations ! ✨</div>
-          <div class="ra-victory-desc">Toutes les cartes rares ont été assemblées avec succès !</div>
+          <div class="ra-victory-desc">Toutes les affiches ont été assemblées avec succès !</div>
           <button type="button" class="ra-victory-replay" id="btn-replay">Recommencer</button>
         </div>
 
         <div class="ra-puzzle-tray-container" id="tray-container">
-          <div class="ra-puzzle-tray-label">Cartes collectionnées</div>
+          <div class="ra-puzzle-tray-label">Affiches collectionnées</div>
           <div class="ra-puzzle-tray" id="puzzle-tray"></div>
         </div>
       </div>
