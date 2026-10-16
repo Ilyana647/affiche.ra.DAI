@@ -149,10 +149,16 @@ const setupUi = (ctx) => {
       border: 2px dashed rgba(255, 215, 0, 0.35);
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
       margin: 10px 0;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
     .ra-puzzle-board.is-won {
       border: 2px solid #34c759;
       box-shadow: 0 0 40px rgba(52, 199, 89, 0.6);
+    }
+    .ra-puzzle-board.is-wrong {
+      border: 2px solid #ff9500;
+      box-shadow: 0 0 25px rgba(255, 149, 0, 0.5);
+      animation: ra-shake 0.45s ease-in-out;
     }
 
     .ra-puzzle-slot {
@@ -181,6 +187,27 @@ const setupUi = (ctx) => {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
+    }
+
+    /* Message d'aide et vérification en cas d'erreur */
+    .ra-puzzle-hint {
+      display: none;
+      background: rgba(255, 149, 0, 0.16);
+      border: 1px solid rgba(255, 179, 0, 0.5);
+      color: #ffd666;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      max-width: 350px;
+      margin: 6px auto;
+      text-align: center;
+      line-height: 1.45;
+      box-sizing: border-box;
+      z-index: 3;
+      animation: ra-shake 0.4s ease-in-out;
+    }
+    .ra-puzzle-hint.is-visible {
       display: block;
     }
 
@@ -254,13 +281,15 @@ const setupUi = (ctx) => {
       font-size: 26px;
       font-weight: 900;
       color: #ffea00;
-      margin: 0 0 4px;
+      margin: 0 0 6px;
       text-shadow: 0 0 25px rgba(255, 234, 0, 0.8);
     }
     .ra-victory-desc {
       font-size: 14px;
       opacity: 0.95;
-      margin: 0 0 14px;
+      line-height: 1.5;
+      max-width: 380px;
+      margin: 0 auto 16px;
     }
     .ra-victory-replay {
       background: linear-gradient(135deg, #ffcc00, #ff8800);
@@ -311,6 +340,13 @@ const setupUi = (ctx) => {
       0% { transform: scale(0.85); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
+    @keyframes ra-shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
   `)
 
   // Bouton HUD en haut à droite
@@ -328,7 +364,7 @@ const setupUi = (ctx) => {
     openPuzzle(ctx)
   })
 
-  // Ordre des 9 affiches dans le puzzle 3x3
+  // Ordre exact des 9 affiches dans le puzzle 3x3 pour correspondre à "castors"
   const ORDER = [
     'castor-1', 'castor-2', 'castor-3',
     'castor-4', 'castor-5', 'castor-6',
@@ -372,9 +408,13 @@ const setupUi = (ctx) => {
         `).join('')}
       </div>
 
+      <div class="ra-puzzle-hint" id="error-hint">
+        🔍 <strong>Ce n’est pas tout à fait ça !</strong> Regarde bien les raccords et les détails entre les affiches, tu y es presque. Prends ton temps pour replacer les cartes au bon endroit !
+      </div>
+
       <div class="ra-puzzle-victory" id="victory-box">
         <div class="ra-victory-title">✨ Félicitations ! ✨</div>
-        <div class="ra-victory-desc">Toutes les affiches ont été assemblées avec succès !</div>
+        <div class="ra-victory-desc">Tu as reconstitué le grand puzzle des castors avec succès ! Toutes les affiches sont parfaitement à leur place. 🎉✨</div>
         <button type="button" class="ra-victory-replay" id="btn-replay">Recommencer</button>
       </div>
 
@@ -389,6 +429,7 @@ const setupUi = (ctx) => {
   const board = panel.querySelector('#puzzle-board')
   const tray = panel.querySelector('#puzzle-tray')
   const victoryBox = panel.querySelector('#victory-box')
+  const errorHint = panel.querySelector('#error-hint')
   const fireworks = panel.querySelector('#fireworks-container')
   const trayContainer = panel.querySelector('#tray-container')
 
@@ -404,8 +445,9 @@ const setupUi = (ctx) => {
   const initGame = () => {
     gridState.fill(null)
     selectedPieceId = null
-    board.classList.remove('is-won')
+    board.classList.remove('is-won', 'is-wrong')
     victoryBox.classList.remove('is-visible')
+    errorHint.classList.remove('is-visible')
     fireworks.classList.remove('is-active')
     trayContainer.style.display = 'block'
 
@@ -447,15 +489,19 @@ const setupUi = (ctx) => {
     slot.addEventListener('click', () => {
       const index = parseInt(slot.dataset.index, 10)
 
+      // Retirer une pièce déjà posée
       if (gridState[index] && !selectedPieceId) {
         const removedId = gridState[index]
         gridState[index] = null
         slot.innerHTML = `<span class="ra-puzzle-slot-num">${index + 1}</span>`
         const pieceEl = tray.querySelector(`[data-id="${removedId}"]`)
         if (pieceEl) pieceEl.classList.remove('is-placed')
+        errorHint.classList.remove('is-visible')
+        board.classList.remove('is-wrong')
         return
       }
 
+      // Poser la pièce sélectionnée
       if (selectedPieceId) {
         if (gridState[index]) {
           const oldId = gridState[index]
@@ -474,11 +520,15 @@ const setupUi = (ctx) => {
 
         selectedPieceId = null
 
+        // Vérification automatique dès que les 9 cases sont remplies
         const isFull = gridState.every((id) => id !== null)
         if (isFull) {
           const isCorrect = gridState.every((id, idx) => id === ORDER[idx])
           if (isCorrect) {
+            // Assemblage réussi
+            board.classList.remove('is-wrong')
             board.classList.add('is-won')
+            errorHint.classList.remove('is-visible')
             victoryBox.classList.add('is-visible')
             fireworks.classList.add('is-active')
             trayContainer.style.display = 'none'
@@ -490,7 +540,15 @@ const setupUi = (ctx) => {
             } catch {
               // Silencieux
             }
+          } else {
+            // Assemblage incorrect : invitation bienveillante à vérifier les positions
+            board.classList.remove('is-won')
+            board.classList.add('is-wrong')
+            errorHint.classList.add('is-visible')
           }
+        } else {
+          errorHint.classList.remove('is-visible')
+          board.classList.remove('is-wrong')
         }
       }
     })
@@ -500,7 +558,7 @@ const setupUi = (ctx) => {
 /** @type {import('../../core/behaviors').Behavior} */
 export default {
   onFound(ctx, targetId) {
-    // Si c'est l'affiche complète "castors", elle n'a pas l'animation de carte
+    // Si c'est l'affiche complète "castors", elle n'a pas l'animation de carte qui tourne
     if (targetId === 'castors') {
       const b = ctx.bricks && ctx.bricks.get('eclat-dore')
       if (b && b.group) b.group.visible = false
