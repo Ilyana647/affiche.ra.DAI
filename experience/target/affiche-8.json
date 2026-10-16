@@ -1,0 +1,24 @@
+{
+  "imagePath": "image-targets/affiche-8_luminance.jpg",
+  "metadata": null,
+  "name": "affiche-8",
+  "type": "PLANAR",
+  "properties": {
+    "left": 7,
+    "top": 0,
+    "width": 2571,
+    "height": 3428,
+    "isRotated": false,
+    "originalWidth": 2585,
+    "originalHeight": 3428
+  },
+  "resources": {
+    "originalImage": "affiche-8_original.jpg",
+    "croppedImage": "affiche-8_cropped.jpg",
+    "thumbnailImage": "affiche-8_thumbnail.jpg",
+    "luminanceImage": "affiche-8_luminance.jpg",
+    "posterImage": "affiche-8_poster.jpg"
+  },
+  "created": 1792135506814,
+  "updated": 1792135506814
+}
