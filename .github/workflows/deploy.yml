@@ -27,10 +27,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          # Pas de « cache: npm » : il exige un package-lock.json, que l'export
+          # Google AI Studio ne pousse pas toujours.
 
+      # Google AI Studio réécrit package-lock.json à chaque push (sans « resolved »
+      # ni « integrity », parfois désynchronisé de package.json), ou ne le pousse
+      # pas du tout : npm ci échoue alors.
+      # Dans ce cas, on ignore le lock et on réinstalle depuis package.json.
       - name: Installer les dépendances
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ] && grep -q '"resolved"' package-lock.json && npm ci --no-audit --no-fund; then
+            echo "package-lock.json valide : npm ci"
+          else
+            echo "::warning::package-lock.json absent, incomplet ou désynchronisé (export Google AI Studio ?) : installation avec npm install."
+            rm -rf node_modules package-lock.json
+            npm install --no-audit --no-fund
+          fi
 
       # Affiche les erreurs/avertissements dans le journal, sans bloquer la publication.
       - name: Vérifier experience/
